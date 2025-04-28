@@ -36,3 +36,19 @@ async function vote(contributor) {
   });
   alert('Vote berhasil!');
 }
+async function deletePolling(contributor) {
+  const confirmDelete = confirm('Apakah Anda yakin ingin menghapus polling ini?');
+  if (!confirmDelete) return;
+
+  const res = await fetch(`/pollings/${contributor}`, {
+    method: 'DELETE'
+  });
+
+  if (res.ok) {
+    alert('Polling berhasil dihapus.');
+    loadPollings();
+  } else {
+    const errorData = await res.json();
+    alert('Gagal menghapus polling: ' + errorData.message);
+  }
+}
