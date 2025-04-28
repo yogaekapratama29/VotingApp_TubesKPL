@@ -31,9 +31,6 @@ async function loadPollings() {
   const res = await fetch('/pollings');
   const pollings = await res.json();
   
-  contributor.value = '';
-  title.value = '';
-  options.value = '';
   container.innerHTML = '';
 
   pollings.forEach(poll => {
