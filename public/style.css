@@ -1,19 +1,80 @@
+/* Global styles */
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-  }
-  
-  section {
-    margin-bottom: 40px;
-  }
-  
-  input, select, button {
-    display: block;
-    margin: 10px 0;
-    padding: 8px;
-  }
-  
-  button {
-    cursor: pointer;
-  }
-  
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f6f8;
+  margin: 0;
+  padding: 20px;
+  color: #333;
+}
+
+/* Header */
+h1 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 40px;
+}
+
+/* Sections */
+section {
+  background-color: #fff;
+  padding: 20px;
+  margin: 20px auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  max-width: 600px;
+}
+
+/* Form elements */
+input, select, button {
+  width: 100%;
+  padding: 10px 12px;
+  margin: 10px 0;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+/* Buttons */
+button {
+  background-color: #3498db;
+  color: white;
+  font-weight: bold;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+/* Poll display */
+#pollings > div {
+  margin-bottom: 30px;
+}
+
+hr {
+  border: none;
+  height: 1px;
+  background-color: #ddd;
+  margin-top: 20px;
+}
+
+/* Poll result */
+#pollings div p {
+  margin: 5px 0;
+}
+
+/* Button group */
+button + button {
+  margin-top: 10px;
+}
+
+/* Result container */
+#pollings div > div {
+  margin-top: 10px;
+}
