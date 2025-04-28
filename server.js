@@ -76,6 +76,23 @@ app.delete('/pollings/:contributor', (req, res) => {
   res.json({ message: 'Polling deleted successfully' });
 });
 
+app.get('/pollings/:contributor/results', (req, res) => {
+    const { contributor } = req.params;
+    const polling = pollings.get(contributor);
+    if (!polling) {
+    return res.status(404).json({ message: 'Polling not found' });
+    }
+
+    const result = {};
+    polling.options.forEach(opt => result[opt] = 0);
+    for (const vote of polling.votes.values()) {
+    result[vote]++;
+    }
+
+    res.json(result);
+});
+
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server Berjalan pada http://localhost:${port}`);
