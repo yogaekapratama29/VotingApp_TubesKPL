@@ -23,9 +23,6 @@ async function createPolling() {
 }
 
 async function loadPollings() {
-  const contributor = document.getElementById('contributor');
-  const title = document.getElementById('title');
-  const options = document.getElementById('options')
   const container = document.getElementById('pollings');
   
   const res = await fetch('/pollings');
