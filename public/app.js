@@ -19,7 +19,6 @@ async function createPolling(){
 }
 
 
-
 async function batalVote(contributor) {
     const voterName = document.getElementById(`voter-${contributor}`).value;
   
@@ -39,3 +38,16 @@ async function batalVote(contributor) {
   
     alert('Vote berhasil dibatalkan!');
   }
+
+  
+  async function showResults(contributor) {
+    const res = await fetch(`/pollings/${contributor}/results`);
+    const results = await res.json();
+    const container = document.getElementById(`result-${contributor}`);
+    container.innerHTML = '';
+  
+    for (const [option, count] of Object.entries(results)) {
+      container.innerHTML += `<p>${option}: ${count} suara</p>`;
+    }
+  }
+  
