@@ -22,6 +22,17 @@ app.get('/pollings', (req, res) => {
     res.json(allPollings);
 })
 
+app.delete('/pollings/:contributor', (req, res) => {
+    const { contributor } = req.params;
+  
+    if (!pollings.has(contributor)) {
+      return res.status(404).json({ message: 'Polling not found' });
+    }
+  
+    pollings.delete(contributor);
+    res.json({ message: 'Polling deleted successfully' });
+  });
+  
 // Start the server
 app.listen(port, () => {
     console.log(`Server Berjalan pada http://localhost:${port}`);
