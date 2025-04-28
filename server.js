@@ -10,7 +10,6 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 
 // Routes
-
 app.get('/pollings', (req, res) => {
   const allPollings = Array.from(pollings.values()).map((p) => ({
     contributor: p.contributor,
@@ -49,22 +48,6 @@ app.post('/pollings/:contributor/vote', (req, res) => {
   res.json({ message: 'Vote saved' });
 });
 
-app.get('/pollings/:contributor/results', (req, res) => {
-  const { contributor } = req.params;
-  const polling = pollings.get(contributor);
-  if (!polling) {
-    return res.status(404).json({ message: 'Polling not found' });
-  }
-
-  const result = {};
-  polling.options.forEach((opt) => (result[opt] = 0));
-  for (const vote of polling.votes.values()) {
-    result[vote]++;
-  }
-
-  res.json(result);
-});
-
 app.delete('/pollings/:contributor', (req, res) => {
   const { contributor } = req.params;
 
@@ -80,18 +63,17 @@ app.get('/pollings/:contributor/results', (req, res) => {
     const { contributor } = req.params;
     const polling = pollings.get(contributor);
     if (!polling) {
-    return res.status(404).json({ message: 'Polling not found' });
+        return res.status(404).json({ message: 'Polling not found' });
     }
 
     const result = {};
     polling.options.forEach(opt => result[opt] = 0);
     for (const vote of polling.votes.values()) {
-    result[vote]++;
+        result[vote]++;
     }
 
     res.json(result);
 });
-
 
 // Start the server
 app.listen(port, () => {

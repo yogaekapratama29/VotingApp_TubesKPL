@@ -1,9 +1,10 @@
+loadPollings();
+
 async function createPolling() {
   const contributor = document.getElementById('contributor').value;
   const title = document.getElementById('title').value;
-  const options = document
-    .getElementById('options')
-    .value.split(',')
+  const options = document.getElementById('options').value
+    .split(',')
     .map((option) => option.trim());
 
   await fetch('/pollings', {
@@ -17,7 +18,41 @@ async function createPolling() {
       options,
     }),
   });
+
   loadPollings();
+}
+
+async function loadPollings() {
+  const contributor = document.getElementById('contributor').value;
+  const title = document.getElementById('title').value;
+  const options = document.getElementById('options').value
+  const container = document.getElementById('pollings');
+  
+  const res = await fetch('/pollings');
+  const pollings = await res.json();
+  
+  contributor.value = '';
+  title.value = '';
+  options.value = '';
+  container.innerHTML = '';
+
+  pollings.forEach(poll => {
+    const div = document.createElement('div');
+    
+    div.innerHTML = `
+      <h3>${poll.title}</h3>
+      <p>Dibuat oleh: ${poll.contributor}</p>
+      <select id="choice-${poll.contributor}">
+        ${poll.options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+      </select>
+      <input type="text" id="voter-${poll.contributor}" placeholder="Nama Anda">
+      <button onclick="vote('${poll.contributor}')">Vote</button>
+      <button onclick="showResults('${poll.contributor}')">Lihat Hasil</button>
+      <div id="result-${poll.contributor}"></div>
+      <hr>`;
+
+    container.appendChild(div);
+  });
 }
 
 async function vote(contributor) {
@@ -51,26 +86,6 @@ async function deletePolling(contributor) {
     const errorData = await res.json();
     alert('Gagal menghapus polling: ' + errorData.message);
   }
-}
-
-async function batalVote(contributor) {
-    const voterName = document.getElementById(`voter-${contributor}`).value;
-  
-    if (!voterName) {
-      alert('Masukkan nama Anda untuk membatalkan vote!');
-      return;
-    }
-  
-    const confirmCancel = confirm(`Yakin ingin membatalkan vote untuk ${voterName}?`);
-    if (!confirmCancel) return;
-  
-    await fetch(`/pollings/${contributor}/cancelVote`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ voterName })
-    });
-  
-    alert('Vote berhasil dibatalkan!');
 }
 
 async function showResults(contributor) {
