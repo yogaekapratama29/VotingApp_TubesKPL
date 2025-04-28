@@ -17,3 +17,25 @@ async function createPolling(){
 
     loadPollings();
 }
+
+
+
+async function batalVote(contributor) {
+    const voterName = document.getElementById(`voter-${contributor}`).value;
+  
+    if (!voterName) {
+      alert('Masukkan nama Anda untuk membatalkan vote!');
+      return;
+    }
+  
+    const confirmCancel = confirm(`Yakin ingin membatalkan vote untuk ${voterName}?`);
+    if (!confirmCancel) return;
+  
+    await fetch(`/pollings/${contributor}/cancelVote`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ voterName })
+    });
+  
+    alert('Vote berhasil dibatalkan!');
+  }
