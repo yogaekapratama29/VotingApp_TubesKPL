@@ -48,6 +48,7 @@ async function loadPollings() {
       <input type="text" id="voter-${poll.contributor}" placeholder="Nama Anda">
       <button onclick="vote('${poll.contributor}')">Vote</button>
       <button onclick="showResults('${poll.contributor}')">Lihat Hasil</button>
+       <button onclick="deletePolling('${poll.contributor}')">Hapus Polling</button>
       <div id="result-${poll.contributor}"></div>
       <hr>`;
 
