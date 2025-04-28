@@ -19,3 +19,20 @@ async function createPolling() {
   });
   loadPollings();
 }
+
+async function vote(contributor) {
+  const voterName = document.getElementById(`voter-${contributor}`).value;
+  const choice = document.getElementById(`choice-${contributor}`).value;
+
+  await fetch(`/pollings/${contributor}/vote`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      voterName,
+      choice,
+    }),
+  });
+  alert('Vote berhasil!');
+}
