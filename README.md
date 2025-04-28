@@ -6,8 +6,14 @@ Fitur utamanya adalah membuat polling, memberikan suara, melihat hasil secara re
 
 ## How to Setup
 
-`npm install express body-parser`
+```sh
+git clone https://github.com/yogaekapratama29/VotingApp_TubesKPL.git
+cd VotingApp_TubesKPL
+npm install express body-parser
+```
 
 ## How to Run
 
-`npm start`
+```sh
+npm start
+```
