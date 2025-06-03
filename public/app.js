@@ -19,6 +19,13 @@ async function createPolling() {
     }),
   });
 
+  alert('Polling berhasil dibuat!');
+  
+  bootstrap.Modal.getOrCreateInstance(document.getElementById('modalCreate')).hide();
+  contributor.value = '';
+  title.value = '';
+  options.value = '';
+
   loadPollings();
 }
 
@@ -34,17 +41,26 @@ async function loadPollings() {
     const div = document.createElement('div');
     
     div.innerHTML = `
-      <h3>${poll.title}</h3>
-      <p>Dibuat oleh: ${poll.contributor}</p>
-      <select id="choice-${poll.contributor}">
-        ${poll.options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
-      </select>
-      <input type="text" id="voter-${poll.contributor}" placeholder="Nama Anda">
-      <button onclick="vote('${poll.contributor}')">Vote</button>
-      <button onclick="showResults('${poll.contributor}')">Lihat Hasil</button>
-       <button onclick="deletePolling('${poll.contributor}')">Hapus Polling</button>
-      <div id="result-${poll.contributor}"></div>
-      <hr>`;
+      <div class="mb-3 p-3 shadow rounded">
+        <p>${poll.title} by ${poll.contributor}</p>
+        
+        <div class="mb-3">
+          <select id="choice-${poll.contributor}" class="form-control">
+            ${poll.options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+          </select>
+        </div>
+        <div class="mb-3">
+          <input type="text" id="voter-${poll.contributor}" placeholder="Nama Anda" class="form-control">
+        </div>
+        <div class="mb-3 d-grid gap-2 d-md-flex">
+          <button class="btn btn-primary flex-fill" onclick="vote('${poll.contributor}')">Vote</button>
+          <button class="btn btn-secondary flex-fill" onclick="showResults('${poll.contributor}')">Lihat Hasil</button>
+          <button class="btn btn-danger flex-fill" onclick="deletePolling('${poll.contributor}')">Hapus Polling</button>
+        </div>
+        
+        <div id="result-${poll.contributor}"></div>
+      </div>
+    `;
 
     container.appendChild(div);
   });

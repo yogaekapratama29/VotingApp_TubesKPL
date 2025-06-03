@@ -6,6 +6,14 @@ const port = 3000;
 
 const pollings = new Map();
 
+pollings.set('Nizar', {
+  contributor: 'Nizar',
+  title: 'Anime Terbaik',
+  options: ['Naruto', 'Wanpis', 'Bengdrim'],
+  votes: new Map(),
+  isClosed: false,
+});
+
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
