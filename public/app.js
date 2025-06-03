@@ -40,6 +40,7 @@ async function loadPollings() {
   pollings.forEach(poll => {
     const div = document.createElement('div');
     
+    div.classList.add('polling-card');
     div.innerHTML = `
       <div class="mb-3 p-3 shadow rounded">
         <p>${poll.title} by ${poll.contributor}</p>
