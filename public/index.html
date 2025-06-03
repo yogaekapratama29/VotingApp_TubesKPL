@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Polling App</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 <body>
-  <h1>Polling App</h1>
+  <div class="container">
+    <h1>🗳️ Polling App</h1>
 
-  <section>
-    <h2>Buat Polling</h2>
-    <input type="text" id="contributor" placeholder="Nama Pembuat">
-    <input type="text" id="title" placeholder="Judul Polling">
-    <input type="text" id="options" placeholder="Opsi (pisahkan dengan koma)">
-    <button onclick="createPolling()">Buat Polling</button>
-  </section>
+    <section class="form-section">
+      <h2>Buat Polling Baru</h2>
+      <input type="text" id="contributor" placeholder="Nama Pembuat Polling" />
+      <input type="text" id="title" placeholder="Judul Polling" />
+      <input type="text" id="options" placeholder="Opsi (pisahkan dengan koma)" />
+      <button onclick="createPolling()">➕ Buat Polling</button>
+    </section>
 
-  <section>
-    <h2>Polling Tersedia</h2>
-    <div id="pollings"></div>
-  </section>
+    <section class="polling-section">
+      <h2>Polling Tersedia</h2>
+      <div id="pollings"></div>
+    </section>
+  </div>
 
   <script src="app.js"></script>
 </body>

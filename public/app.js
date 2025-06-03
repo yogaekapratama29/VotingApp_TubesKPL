@@ -33,6 +33,7 @@ async function loadPollings() {
   pollings.forEach(poll => {
     const div = document.createElement('div');
     
+    div.classList.add('polling-card');
     div.innerHTML = `
       <h3>${poll.title}</h3>
       <p>Dibuat oleh: ${poll.contributor}</p>
