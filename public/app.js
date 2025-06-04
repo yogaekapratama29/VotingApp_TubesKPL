@@ -47,15 +47,15 @@ async function findPolling() {
       <p>${polling?.title} by ${polling?.contributor} #${polling?.kode}</p>
       
       <div class="mb-3">
-        <select id="choice-${polling?.kode}" class="form-control">
+        <select id="choice-${polling?.kode}-create" class="form-control">
           ${polling?.options?.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
         </select>
       </div>
       <div class="mb-3">
-        <input type="text" id="voter-${polling?.kode}" placeholder="Nama Anda" class="form-control">
+        <input type="text" id="voter-${polling?.kode}-create" placeholder="Nama Anda" class="form-control">
       </div>
       <div class="mb-3 d-grid gap-2 d-md-flex">
-        <button class="btn btn-primary flex-fill" onclick="vote('${polling?.kode}')">Vote</button>
+        <button class="btn btn-primary flex-fill" onclick="vote('${polling?.kode}', 'create')">Vote</button>
       </div>
     </div>
   ` : `<p class="text-center text-muted">Polling not found</p>`;
@@ -82,17 +82,17 @@ async function findPollingManajemen() {
       <p>${polling?.title} by ${polling?.contributor} #${polling?.kode}</p>
       
       <div class="mb-3">
-        <select id="choice-${polling?.kode}" class="form-control">
+        <select id="choice-${polling?.kode}-manajemen" class="form-control">
           ${polling?.options?.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
         </select>
       </div>
       <div class="mb-3">
-        <input type="text" id="voter-${polling?.kode}" placeholder="Nama Anda" class="form-control">
+        <input type="text" id="voter-${polling?.kode}-manajemen" placeholder="Nama Anda" class="form-control">
       </div>
       <div class="mb-3 d-grid gap-2 d-md-flex">
-        <button class="btn btn-primary flex-fill" onclick="vote('${polling?.kode}')">Vote</button>
+        <button class="btn btn-primary flex-fill" onclick="vote('${polling.kode}', 'manajemen')">Vote</button>
         <button class="btn btn-secondary flex-fill" onclick="showResults('${polling?.kode}', 'manajemen')">Lihat Hasil</button>
-        <button class="btn btn-danger flex-fill" onclick="deletePolling('${polling?.kode}')">Hapus Polling</button>
+        <button class="btn btn-danger flex-fill" onclick="deletePolling('${polling?.kode}', 'manajemen')">Hapus Polling</button>
       </div>
       
       <div id="result-${polling?.kode}-manajemen"></div>
@@ -120,17 +120,17 @@ async function loadPollings() {
         <p>${poll.title} by ${poll.contributor} #${poll.kode}</p>
         
         <div class="mb-3">
-          <select id="choice-${poll.kode}" class="form-control">
+          <select name="choice-${poll.kode}-daftar" id="choice-${poll.kode}-daftar" class="form-control">
             ${poll.options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
           </select>
         </div>
         <div class="mb-3">
-          <input type="text" id="voter-${poll.kode}" placeholder="Nama Anda" class="form-control">
+          <input type="text" name="voter-${poll.kode}-daftar" id="voter-${poll.kode}-daftar" placeholder="Nama Anda" class="form-control">
         </div>
         <div class="mb-3 d-grid gap-2 d-md-flex">
-          <button class="btn btn-primary flex-fill" onclick="vote('${poll.kode}')">Vote</button>
+          <button class="btn btn-primary flex-fill" onclick="vote('${poll.kode}', 'daftar')">Vote</button>
           <button class="btn btn-secondary flex-fill" onclick="showResults('${poll.kode}', 'daftar')">Lihat Hasil</button>
-          <button class="btn btn-danger flex-fill" onclick="deletePolling('${poll.kode}')">Hapus Polling</button>
+          <button class="btn btn-danger flex-fill" onclick="deletePolling('${poll.kode}', 'daftar')">Hapus Polling</button>
         </div>
         
         <div id="result-${poll.kode}-daftar"></div>
@@ -141,9 +141,11 @@ async function loadPollings() {
   });
 }
 
-async function vote(kode) {
-  const voterName = document.getElementById(`voter-${kode}`).value;
-  const choice = document.getElementById(`choice-${kode}`).value;
+async function vote(kode, location) {
+  const voterName = document.getElementById(`voter-${kode}-${location}`).value;
+  const choice = document.getElementById(`choice-${kode}-${location}`).value;
+
+  console.log(voterName, choice);
 
   await fetch(`/pollings/${kode}/vote`, {
     method: 'POST',
@@ -160,7 +162,8 @@ async function vote(kode) {
 
   bootstrap.Modal.getOrCreateInstance(document.getElementById('modalPolling')).hide();
 }
-async function deletePolling(kode) {
+
+async function deletePolling(kode, location) {
   const confirmDelete = confirm('Apakah Anda yakin ingin menghapus polling ini?');
   if (!confirmDelete) return;
 
@@ -171,7 +174,7 @@ async function deletePolling(kode) {
   if (res.ok) {
     alert('Polling berhasil dihapus.');
     findPollingManajemen();
-    // loadPollings();
+    loadPollings();
   } else {
     const errorData = await res.json();
     alert('Gagal menghapus polling: ' + errorData.message);
@@ -187,4 +190,6 @@ async function showResults(kode, location) {
   for (const [option, count] of Object.entries(results)) {
     container.innerHTML += `<p>${option}: ${count} suara</p>`;
   }
+
+  console.log(results);
 }
