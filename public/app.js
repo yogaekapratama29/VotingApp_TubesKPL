@@ -91,11 +91,11 @@ async function findPollingManajemen() {
       </div>
       <div class="mb-3 d-grid gap-2 d-md-flex">
         <button class="btn btn-primary flex-fill" onclick="vote('${polling?.kode}')">Vote</button>
-        <button class="btn btn-secondary flex-fill" onclick="showResults('${polling?.kode}')">Lihat Hasil</button>
+        <button class="btn btn-secondary flex-fill" onclick="showResults('${polling?.kode}', 'manajemen')">Lihat Hasil</button>
         <button class="btn btn-danger flex-fill" onclick="deletePolling('${polling?.kode}')">Hapus Polling</button>
       </div>
       
-      <div id="result-${polling?.kode}"></div>
+      <div id="result-${polling?.kode}-manajemen"></div>
     </div>
   ` : `<p class="text-center text-muted">Polling not found</p>`;
 
@@ -129,11 +129,11 @@ async function loadPollings() {
         </div>
         <div class="mb-3 d-grid gap-2 d-md-flex">
           <button class="btn btn-primary flex-fill" onclick="vote('${poll.kode}')">Vote</button>
-          <button class="btn btn-secondary flex-fill" onclick="showResults('${poll.kode}')">Lihat Hasil</button>
+          <button class="btn btn-secondary flex-fill" onclick="showResults('${poll.kode}', 'daftar')">Lihat Hasil</button>
           <button class="btn btn-danger flex-fill" onclick="deletePolling('${poll.kode}')">Hapus Polling</button>
         </div>
         
-        <div id="result-${poll.kode}"></div>
+        <div id="result-${poll.kode}-daftar"></div>
       </div>
     `;
 
@@ -177,10 +177,10 @@ async function deletePolling(kode) {
   }
 }
 
-async function showResults(kode) {
+async function showResults(kode, location) {
   const res = await fetch(`/pollings/${kode}/results`);
   const results = await res.json();
-  const container = document.getElementById(`result-${kode}`);
+  const container = document.getElementById(`result-${kode}-${location}`);
   container.innerHTML = '';
 
   for (const [option, count] of Object.entries(results)) {
