@@ -97,6 +97,7 @@ app.get('/pollings/:kode/results', (req, res) => {
         result[vote]++;
     }
 
+    console.log(polling);
     res.json(result);
 });
 
