@@ -6,12 +6,22 @@ const port = 3000;
 
 const pollings = new Map();
 
+pollings.set('177013', {
+  kode: '177013',
+  contributor: 'Nizar',
+  title: 'Anime Terbaik',
+  options: ['Naruto', 'Wanpis', 'Bengdrim'],
+  votes: new Map(),
+  isClosed: false,
+});
+
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
 // Routes
 app.get('/pollings', (req, res) => {
   const allPollings = Array.from(pollings.values()).map((p) => ({
+    kode: p.kode,
     contributor: p.contributor,
     title: p.title,
     options: p.options,
@@ -21,11 +31,12 @@ app.get('/pollings', (req, res) => {
 });
 
 app.post('/pollings', (req, res) => {
-  const { contributor, title, options } = req.body;
-  if (!contributor || !title || !options) {
+  const { kode, contributor, title, options } = req.body;
+  if (!kode || !contributor || !title || !options) {
     return res.status(400).json({ message: 'Invalid data' });
   }
-  pollings.set(contributor, {
+  pollings.set(kode, {
+    kode,
     contributor,
     title,
     options,
@@ -35,11 +46,25 @@ app.post('/pollings', (req, res) => {
   res.json({ message: 'Polling created successfully' });
 });
 
-app.post('/pollings/:contributor/vote', (req, res) => {
-  const { contributor } = req.params;
+app.get('/pollings/:kode', (req, res) => {
+  const { kode } = req.params;
+  const polling = pollings.get(kode);
+  if (!polling) return res.status(404).json({ message: 'Polling not found' });
+  
+  res.json({
+    kode: polling.kode,
+    contributor: polling.contributor,
+    title: polling.title,
+    options: polling.options,
+    isClosed: polling.isClosed,
+  });
+});
+
+app.post('/pollings/:kode/vote', (req, res) => {
+  const { kode } = req.params;
   const { voterName, choice } = req.body;
 
-  const polling = pollings.get(contributor);
+  const polling = pollings.get(kode);
   if (!polling || polling.isClosed) {
     return res.status(404).json({ message: 'Polling not found or closed' });
   }
@@ -48,20 +73,20 @@ app.post('/pollings/:contributor/vote', (req, res) => {
   res.json({ message: 'Vote saved' });
 });
 
-app.delete('/pollings/:contributor', (req, res) => {
-  const { contributor } = req.params;
+app.delete('/pollings/:kode', (req, res) => {
+  const { kode } = req.params;
 
-  if (!pollings.has(contributor)) {
+  if (!pollings.has(kode)) {
     return res.status(404).json({ message: 'Polling not found' });
   }
 
-  pollings.delete(contributor);
+  pollings.delete(kode);
   res.json({ message: 'Polling deleted successfully' });
 });
 
-app.get('/pollings/:contributor/results', (req, res) => {
-    const { contributor } = req.params;
-    const polling = pollings.get(contributor);
+app.get('/pollings/:kode/results', (req, res) => {
+    const { kode } = req.params;
+    const polling = pollings.get(kode);
     if (!polling) {
         return res.status(404).json({ message: 'Polling not found' });
     }
