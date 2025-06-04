@@ -17,25 +17,24 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <div class="ms-auto navbar-nav">
           <a class="nav-link click" role="button" data-bs-toggle="modal" data-bs-target="#modalCreate">Buat Polling</a>
-          <a class="nav-link click" role="button" data-bs-toggle="modal" data-bs-target="#modalDaftarPolling">Daftar Polling</a>
-          <!-- <a class="nav-link disabled" role="button">Edit/Hapus Polling</a> -->
-          <!-- <a class="nav-link disabled" role="button">Cetak Hasil Polling</a> -->
+          <!-- <a class="nav-link click" role="button" data-bs-toggle="modal" data-bs-target="#modalDaftarPolling">Daftar Polling</a> -->
+          <a class="nav-link click" role="button" data-bs-toggle="modal" data-bs-target="#modalManajemenPolling">Manajemen Polling</a>
+          <a class="nav-link click disabled" role="button">Cetak Hasil Polling</a>
         </div>
       </div>
     </div>
   </nav>
 
-  <!-- Find Vote -->
-  <!-- <div class="container d-flex justify-content-center align-items-center" style="height: 25rem;"> -->
+  <!-- Find Polling -->
   <div class="container d-flex justify-content-center align-items-center" style="height: 45rem;">
-    <p class="text-secondary" style="font-size: 60px;">Selamat Datang di Voting App!</p>
-    <!-- <form class="d-flex gap-2">
+    <!-- <p class="text-secondary" style="font-size: 60px;">Selamat Datang di Voting App!</p> -->
+    <div class="d-flex gap-2">
       <div class="form-floating">
-        <input type="text" name="kodePolling" id="kodePolling" class="form-control" placeholder="Kode Vote">
-        <label for="kodePolling">Kode Vote</label>
+        <input type="text" name="kodePolling" id="kodePolling" class="form-control" placeholder="Kode Polling">
+        <label for="kodePolling">Kode Polling</label>
       </div>
-      <button type="submit" class="btn btn-primary">Kirim</button>
-    </form> -->
+      <button type="button" class="btn btn-primary" onclick="findPolling()">Kirim</button>
+    </div>
   </div>
 
   <!-- Modal Create -->
@@ -45,6 +44,10 @@
         <div class="modal-body py-5 px-3">
           <h1 class="modal-title fs-5 text-dark text-center" id="modalCreatePolling">Buat Polling</h1>
           <form id="createPollingForm">
+            <div class="mb-3">
+              <label for="kode" class="form-label">Kode Polling</label>
+              <input type="text" id="kode" class="form-control" required>
+            </div>
             <div class="mb-3">
               <label for="contributor" class="form-label">Nama Pembuat</label>
               <input type="text" id="contributor" class="form-control" required>
@@ -75,8 +78,49 @@
           <h1 class="modal-title fs-5 text-dark text-center" id="modalDaftarPollingDesc">Daftar Polling</h1>
           <div id="pollings" class="my-3"></div>
           <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-5">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Polling -->
+  <div class="modal fade" id="modalPolling" tabindex="-1" aria-labelledby="modalPollingDesc" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body py-5 px-3">
+          <div id="polling" class="my-3"></div>
+          <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-5">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Manajemen Polling -->
+  <div class="modal fade" id="modalManajemenPolling" tabindex="-1" aria-labelledby="modalManajemenPollingDesc" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body py-5 px-3">
+          <div class="container d-flex justify-content-center align-items-center">
+            <div class="d-flex gap-2">
+              <div class="form-floating">
+                <input type="text" name="kodePollingManajemen" id="kodePollingManajemen" class="form-control" placeholder="Kode Polling">
+                <label for="kodePollingManajemen">Kode Polling</label>
+              </div>
+              <!-- <div class="form-floating">
+                <input type="password" name="passwordPollingManajemen" id="passwordPollingManajemen" class="form-control" placeholder="Password">
+                <label for="passwordPollingManajemen">Password</label>
+              </div> -->
+              <button type="button" class="btn btn-primary" onclick="findPollingManajemen()">Kirim</button>
             </div>
+          </div>
+          <div id="pollingManajemen" class="my-3"></div>
+          <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-5">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+          </div>
         </div>
       </div>
     </div>
