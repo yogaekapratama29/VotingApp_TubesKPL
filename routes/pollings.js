@@ -1,8 +1,5 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-
-const app = express();
-const port = 3000;
+var express = require('express');
+var router = express.Router();
 
 const pollings = new Map();
 
@@ -15,11 +12,8 @@ pollings.set('177013', {
   isClosed: false,
 });
 
-app.use(bodyParser.json());
-app.use(express.static('public'));
-
-// Routes
-app.get('/pollings', (req, res) => {
+// Get All Pollings
+router.get('/', (req, res) => {
   const allPollings = Array.from(pollings.values()).map((p) => ({
     kode: p.kode,
     contributor: p.contributor,
@@ -27,14 +21,18 @@ app.get('/pollings', (req, res) => {
     options: p.options,
     isClosed: p.isClosed,
   }));
+
   res.json(allPollings);
 });
 
-app.post('/pollings', (req, res) => {
+// Create Polling
+router.post('/', (req, res) => {
   const { kode, contributor, title, options } = req.body;
+
   if (!kode || !contributor || !title || !options) {
     return res.status(400).json({ message: 'Invalid data' });
   }
+  
   pollings.set(kode, {
     kode,
     contributor,
@@ -43,12 +41,15 @@ app.post('/pollings', (req, res) => {
     votes: new Map(),
     isClosed: false,
   });
+  
   res.json({ message: 'Polling created successfully' });
 });
 
-app.get('/pollings/:kode', (req, res) => {
+// Get Polling by Kode
+router.get('/:kode', (req, res) => {
   const { kode } = req.params;
   const polling = pollings.get(kode);
+  
   if (!polling) return res.status(404).json({ message: 'Polling not found' });
   
   res.json({
@@ -60,20 +61,8 @@ app.get('/pollings/:kode', (req, res) => {
   });
 });
 
-app.post('/pollings/:kode/vote', (req, res) => {
-  const { kode } = req.params;
-  const { voterName, choice } = req.body;
-
-  const polling = pollings.get(kode);
-  if (!polling || polling.isClosed) {
-    return res.status(404).json({ message: 'Polling not found or closed' });
-  }
-
-  polling.votes.set(voterName, choice);
-  res.json({ message: 'Vote saved' });
-});
-
-app.delete('/pollings/:kode', (req, res) => {
+// Delete Polling
+router.delete('/:kode', (req, res) => {
   const { kode } = req.params;
 
   if (!pollings.has(kode)) {
@@ -84,24 +73,32 @@ app.delete('/pollings/:kode', (req, res) => {
   res.json({ message: 'Polling deleted successfully' });
 });
 
-app.get('/pollings/:kode/results', (req, res) => {
-    const { kode } = req.params;
-    const polling = pollings.get(kode);
-    if (!polling) {
-        return res.status(404).json({ message: 'Polling not found' });
-    }
+// Create Vote
+router.post('/:kode/vote', (req, res) => {
+  const { kode } = req.params;
+  const { voterName, choice } = req.body;
+  const polling = pollings.get(kode);
+  
+  if (!polling || polling.isClosed) return res.status(404).json({ message: 'Polling not found or closed' });
 
-    const result = {};
-    polling.options.forEach(opt => result[opt] = 0);
-    for (const vote of polling.votes.values()) {
-        result[vote]++;
-    }
+  polling.votes.set(voterName, choice);
 
-    console.log(polling);
-    res.json(result);
+  res.json({ message: 'Vote saved' });
 });
 
-// Start the server
-app.listen(port, () => {
-  console.log(`Server Berjalan pada http://localhost:${port}`);
+// Get Polling Result
+router.get('/:kode/results', (req, res) => {
+  const { kode } = req.params;
+  const polling = pollings.get(kode);
+  const result = {};
+  
+  if (!polling) return res.status(404).json({ message: 'Polling not found' });
+
+  polling.options.forEach(opt => result[opt] = 0);
+  
+  for (const vote of polling.votes.values()) { result[vote]++; }
+
+  res.json(result);
 });
+
+module.exports = router;

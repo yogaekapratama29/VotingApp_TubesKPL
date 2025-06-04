@@ -51,9 +51,11 @@ async function findPolling() {
           ${polling?.options?.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
         </select>
       </div>
+      
       <div class="mb-3">
         <input type="text" id="voter-${polling?.kode}-create" placeholder="Nama Anda" class="form-control">
       </div>
+      
       <div class="mb-3 d-grid gap-2 d-md-flex">
         <button class="btn btn-primary flex-fill" onclick="vote('${polling?.kode}', 'create')">Vote</button>
       </div>
@@ -72,7 +74,6 @@ async function findPollingManajemen() {
 
   const res = await fetch(`/pollings/${kode}`);
   const polling = await res.json();
-  console.log(polling);
 
   container.innerHTML = '';
   const div = document.createElement('div');
@@ -86,9 +87,11 @@ async function findPollingManajemen() {
           ${polling?.options?.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
         </select>
       </div>
+      
       <div class="mb-3">
         <input type="text" id="voter-${polling?.kode}-manajemen" placeholder="Nama Anda" class="form-control">
       </div>
+      
       <div class="mb-3 d-grid gap-2 d-md-flex">
         <button class="btn btn-primary flex-fill" onclick="vote('${polling.kode}', 'manajemen')">Vote</button>
         <button class="btn btn-secondary flex-fill" onclick="showResults('${polling?.kode}', 'manajemen')">Lihat Hasil</button>
@@ -124,9 +127,11 @@ async function loadPollings() {
             ${poll.options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
           </select>
         </div>
+        
         <div class="mb-3">
           <input type="text" name="voter-${poll.kode}-daftar" id="voter-${poll.kode}-daftar" placeholder="Nama Anda" class="form-control">
         </div>
+        
         <div class="mb-3 d-grid gap-2 d-md-flex">
           <button class="btn btn-primary flex-fill" onclick="vote('${poll.kode}', 'daftar')">Vote</button>
           <button class="btn btn-secondary flex-fill" onclick="showResults('${poll.kode}', 'daftar')">Lihat Hasil</button>
@@ -145,7 +150,6 @@ async function vote(kode, location) {
   const voterName = document.getElementById(`voter-${kode}-${location}`).value;
   const choice = document.getElementById(`choice-${kode}-${location}`).value;
 
-  console.log(voterName, choice);
 
   await fetch(`/pollings/${kode}/vote`, {
     method: 'POST',
@@ -191,5 +195,4 @@ async function showResults(kode, location) {
     container.innerHTML += `<p>${option}: ${count} suara</p>`;
   }
 
-  console.log(results);
 }
