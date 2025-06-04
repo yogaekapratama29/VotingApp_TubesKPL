@@ -24,10 +24,10 @@ async function createPolling() {
   alert('Polling berhasil dibuat!');
   
   bootstrap.Modal.getOrCreateInstance(document.getElementById('modalCreate')).hide();
-  kode.value = '';
-  contributor.value = '';
-  title.value = '';
-  options.value = '';
+  document.getElementById('kode').value = '';
+  document.getElementById('contributor').value = '';
+  document.getElementById('title').value = '';
+  document.getElementById('options').value = '';
 
   loadPollings();
 }
@@ -61,7 +61,7 @@ async function findPolling() {
   ` : `<p class="text-center text-muted">Polling not found</p>`;
 
   container.appendChild(div);
-  kode.value = '';
+  document.getElementById('kodePolling').value = '';
   bootstrap.Modal.getOrCreateInstance(document.getElementById('modalPolling')).show();
 }
 
@@ -100,8 +100,8 @@ async function findPollingManajemen() {
   ` : `<p class="text-center text-muted">Polling not found</p>`;
 
   container.appendChild(div);
-  kode.value = '';
-  // password.value = '';
+  document.getElementById('kodePollingManajemen').value = '';
+  // document.getElementById('password').value = '';
 }
 
 async function loadPollings() {
@@ -170,7 +170,8 @@ async function deletePolling(kode) {
 
   if (res.ok) {
     alert('Polling berhasil dihapus.');
-    loadPollings();
+    findPollingManajemen();
+    // loadPollings();
   } else {
     const errorData = await res.json();
     alert('Gagal menghapus polling: ' + errorData.message);
