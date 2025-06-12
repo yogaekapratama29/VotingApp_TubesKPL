@@ -102,3 +102,4 @@ router.get('/:kode/results', (req, res) => {
 });
 
 module.exports = router;
+module.exports.pollings = pollings;
