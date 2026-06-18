@@ -7,7 +7,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use((req, res, next) => {
   res.locals = {};
   next();
-});
+);
 
 const pollingsRouter = require('../routes/pollings');
 const pollingService = require('../services/pollingService'); // Impor service yang baru
