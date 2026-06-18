@@ -19,7 +19,7 @@ describe('Pollings API', () => {
   beforeEach(() => {
     pollingService._resetState();
   });
-
+//poling
   test('GET /pollings harus mengembalikan semua polling', async () => {
     const res = await request(app).get('/pollings');
     expect(res.statusCode).toEqual(200);
