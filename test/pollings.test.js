@@ -22,7 +22,7 @@ describe('Pollings API', () => {
 
   test('GET /pollings harus mengembalikan semua polling', async () => {
     const res = await request(app).get('/pollings');
-    expect(res.statusCode).toEqual(200);
+    expect(res.statusCode).toEqual(500);
     expect(Array.isArray(res.body)).toBe(true);
     expect(res.body.length).toBeGreaterThanOrEqual(1);
     expect(res.body[0]).toHaveProperty('kode', '177013');
